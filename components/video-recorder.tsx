@@ -11,14 +11,13 @@ import {
 } from "@radix-ui/react-icons";
 import { formatTime } from "@/lib/time";
 import { checkMediaSupported, getMediaMimeType } from "@/lib/media";
+import { MAX_RECORDING_TIME_SECONDS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 const ReactMediaRecorder = dynamic(
   () => import("react-media-recorder").then((mod) => mod.ReactMediaRecorder),
   { ssr: false }
 );
-
-const MAX_RECORDING_TIME_SECONDS = 60;
 
 type FacingMode = "user" | "environment";
 

@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer, index, uniqueIndex } from "drizzle-orm/sqlite-core";
 
 // Videos table for uploaded videos
 export const videos = sqliteTable("videos", {
@@ -11,7 +11,9 @@ export const videos = sqliteTable("videos", {
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),
-});
+}, (table) => [
+  index("videos_account_idx").on(table.account),
+]);
 
 export type Video = typeof videos.$inferSelect;
 export type NewVideo = typeof videos.$inferInsert;
@@ -46,7 +48,10 @@ export const likes = sqliteTable("likes", {
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),
-});
+}, (table) => [
+  index("likes_video_id_idx").on(table.videoId),
+  uniqueIndex("likes_video_wallet_idx").on(table.videoId, table.walletAddress),
+]);
 
 export type Like = typeof likes.$inferSelect;
 export type NewLike = typeof likes.$inferInsert;

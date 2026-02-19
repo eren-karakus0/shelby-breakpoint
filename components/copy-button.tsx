@@ -21,8 +21,8 @@ export default function CopyButton({ text }: { text: string }) {
     <Button
       size="icon"
       variant="outline"
-      onClick={() => {
-        navigator.clipboard.writeText(text);
+      onClick={async () => {
+        await navigator.clipboard.writeText(text);
         toast.success("Copied to clipboard!");
         setIsCopied(true);
       }}

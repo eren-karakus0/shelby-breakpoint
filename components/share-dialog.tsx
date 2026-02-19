@@ -37,7 +37,7 @@ export function ShareDialog({
         });
       } else {
         // Fallback for browsers that don't support the Web Share API
-        navigator.clipboard.writeText(url);
+        await navigator.clipboard.writeText(url);
         toast.success(
           "Link copied to clipboard (sharing not supported in this browser)"
         );

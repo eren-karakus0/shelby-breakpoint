@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { profiles } from "@/db/schema";
 import { verifyRecaptcha } from "@/actions/recaptcha";
+import { MAX_USERNAME_LENGTH, MAX_BIO_LENGTH } from "@/lib/constants";
 import { validateSession } from "./auth";
 
 export type GetProfileParams = {
@@ -41,6 +42,20 @@ export async function saveProfile(params: SaveProfileParams) {
   } = params;
 
   const { address } = await validateSession();
+
+  // Validate profile fields
+  if (username && username.length > MAX_USERNAME_LENGTH) {
+    throw new Error(`Username must be ${MAX_USERNAME_LENGTH} characters or less`);
+  }
+  if (bio && bio.length > MAX_BIO_LENGTH) {
+    throw new Error(`Bio must be ${MAX_BIO_LENGTH} characters or less`);
+  }
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    throw new Error("Invalid email format");
+  }
+  if (x_handle && !/^@?[a-zA-Z0-9_]{1,15}$/.test(x_handle)) {
+    throw new Error("Invalid X handle format");
+  }
 
   // Verify reCAPTCHA if token is provided
   if (recaptchaToken) {

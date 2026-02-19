@@ -14,7 +14,7 @@ import { CheckIcon, PlayIcon, UploadIcon } from "@radix-ui/react-icons";
 import { VideoRecorder } from "@/components/video-recorder";
 import ClientOnly from "@/components/client-only";
 import { toast } from "sonner";
-import { UPLOAD_ALLOWLIST_ADDRESSES } from "@/lib/constants";
+import { UPLOAD_ALLOWLIST_ADDRESSES, BLOB_EXPIRATION_DAYS } from "@/lib/constants";
 import Loader from "@/components/ui/loader";
 import Link from "next/link";
 
@@ -54,7 +54,7 @@ export default function Upload() {
 
       // Step 2: Upload to Shelby
       setUploadProgress("uploading");
-      const expirationMicros = (Date.now() + 14 * 24 * 60 * 60 * 1000) * 1000; // 14 days
+      const expirationMicros = (Date.now() + BLOB_EXPIRATION_DAYS * 24 * 60 * 60 * 1000) * 1000;
       const blobName = `${fileId}/video.mp4`;
       await uploadBlobs({
         blobs: [{ blobName, blobData }],
