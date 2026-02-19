@@ -30,20 +30,23 @@ export function ShareDialog({
   address,
 }: ShareDialogProps) {
   const handleShare = async () => {
-    try {
-      if (navigator.share) {
+    if (navigator.share) {
+      try {
         await navigator.share({
           text: `Check out this video on Shelby Social: ${url}!`,
         });
-      } else {
-        // Fallback for browsers that don't support the Web Share API
+      } catch {
+        // User cancelled the share dialog - expected, not an error
+      }
+    } else {
+      try {
         await navigator.clipboard.writeText(url);
         toast.success(
           "Link copied to clipboard (sharing not supported in this browser)"
         );
+      } catch {
+        toast.error("Failed to copy link to clipboard");
       }
-    } catch {
-      toast.error("Failed to share or copy link");
     }
   };
 
