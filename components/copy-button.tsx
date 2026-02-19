@@ -22,9 +22,13 @@ export default function CopyButton({ text }: { text: string }) {
       size="icon"
       variant="outline"
       onClick={async () => {
-        await navigator.clipboard.writeText(text);
-        toast.success("Copied to clipboard!");
-        setIsCopied(true);
+        try {
+          await navigator.clipboard.writeText(text);
+          toast.success("Copied to clipboard!");
+          setIsCopied(true);
+        } catch {
+          toast.error("Failed to copy to clipboard");
+        }
       }}
       disabled={isCopied}
     >
