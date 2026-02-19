@@ -49,7 +49,6 @@ export const likes = sqliteTable("likes", {
     .notNull()
     .$defaultFn(() => new Date()),
 }, (table) => [
-  index("likes_video_id_idx").on(table.videoId),
   uniqueIndex("likes_video_wallet_idx").on(table.videoId, table.walletAddress),
 ]);
 

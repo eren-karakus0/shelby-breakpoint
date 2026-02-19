@@ -43,7 +43,7 @@ export function ShareDialog({
         );
       }
     } catch {
-      /* empty */
+      toast.error("Failed to share or copy link");
     }
   };
 
